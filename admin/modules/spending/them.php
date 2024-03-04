@@ -111,7 +111,7 @@
 <div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <div><span>Ai là người chi tiêu?</span><span class="close">&times;</span></div>
+        <div><span>Ai là người chi tiêu?</span></div>
         <div class="input-item form-group">
             <label for="spendMember" class="d-block">danh sách thành viên</label>
             <div class="member-box">
