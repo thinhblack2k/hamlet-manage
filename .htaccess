@@ -1,0 +1,11 @@
+RewriteEngine On
+
+RewriteRule "index.html" "index.php"
+
+RewriteRule "login.html" "login.php"
+
+RewriteRule ^admin/login$ admin/login.php [L]
+
+RewriteRule ^admin/trang-chu$ admin/index.php [L]
+
+
