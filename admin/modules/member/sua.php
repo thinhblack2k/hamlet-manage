@@ -31,7 +31,7 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
                             <div class="input-item form-group">
                                 <label for="title" class="d-block">Tổng chi</label>
                                 <input type="number" name="totalExpend" class="form-control" value="<?php echo $item['totalExpend'] ?>" placeholder="total expend" <?php
-                                                                                                                                                                    if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] !== 1) {
+                                                                                                                                                                    if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] != 1) {
                                                                                                                                                                     ?> disabled <?php
                                                                                                                                                                             }
                                                                                                                                                                                 ?> required>
@@ -39,7 +39,7 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
                             <div class="input-item form-group">
                                 <label for="title" class="d-block">Tổng nợ</label>
                                 <input type="number" name="totalLoss" class="form-control" value="<?php echo $item['totalLoss'] ?>" placeholder="total loss" <?php
-                                                                                                                                                            if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] !== 1) {
+                                                                                                                                                            if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] != 1) {
                                                                                                                                                             ?> disabled <?php
                                                                                                                                                                             }
                                                                                                                                                                                 ?> required>

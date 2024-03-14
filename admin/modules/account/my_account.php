@@ -37,7 +37,7 @@ $query_account_edit = mysqli_query($mysqli, $sql_account_edit);
                             </div>
 
                             <button type="submit" name="account_edit" class="btn btn-primary btn-icon-text" style="margin-right: 10px" <?php
-                                                                                                                                        if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] !== 1) {
+                                                                                                                                        if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] != 1) {
                                                                                                                                         ?> disabled <?php
                                                                                                                                         }
                             ?>>

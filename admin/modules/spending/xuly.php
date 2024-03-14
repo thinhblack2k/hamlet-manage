@@ -64,7 +64,7 @@ if (isset($_POST['spend_add'])) {
     $member = mysqli_fetch_array($query_get_member_spending);
     $totalExpendNew = $member['totalExpend'] + $spendTotal;
 
-    $sql_update_member_spending = "UPDATE member SET totalExpend = '" . $totalExpendNew . "' WHERE memberId = $spendMember";
+    $sql_update_member_spending = "UPDATE member SET totalExpend = '" . $totalExpendNew . "', memberNote = 'Vừa thêm 1 khoản chi mới'  WHERE memberId = $spendMember";
     mysqli_query($mysqli, $sql_update_member_spending);
 
     header('Location: ../../index.php?action=spending&query=spending_list&message=success');
@@ -134,7 +134,7 @@ if (isset($_POST['spend_add'])) {
 
     // Cập nhật lại totalExpend của người chi trả
     $totalExpendNew = $totalAmount + $spendTotal;
-    $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew WHERE memberId = '$spendMember'";
+    $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa thay đổi 1 khoản chi' WHERE memberId = '$spendMember'";
     mysqli_query($mysqli, $sql_update_member_spending);
 
     header('Location: ../../index.php?action=spending&query=spending_list&message=success');
@@ -184,7 +184,7 @@ if (isset($_POST['spend_add'])) {
 
         // Cập nhật lại totalExpend của người tạm thanh toán
         $totalExpendNew = $member_expend['totalExpend'] - $spending['spendTotal'];
-        $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew WHERE memberId = " . $spending['spendMember'];
+        $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa xóa 1 khoản chi' WHERE memberId = " . $spending['spendMember'];
         mysqli_query($mysqli, $sql_update_member_spending);
     }
     header('Location: ../../index.php?action=spending&query=spending_list&message=success');

@@ -43,7 +43,7 @@ $query_member_list = mysqli_query($mysqli, $sql_member_list);
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="countDropdown">
                     <a class="dropdown-item py-3">
-                        <p class="mb-0 font-weight-medium float-left">Bạn có thông báo mới </p>
+                        <p class="mb-0 font-weight-medium float-left">Thông báo mới </p>
                         <span class="badge badge-pill badge-primary float-right">View all</span>
                     </a>
                     <div class="dropdown-divider"></div>
@@ -58,7 +58,9 @@ $query_member_list = mysqli_query($mysqli, $sql_member_list);
                             </div>
                             <div class="preview-item-content flex-grow py-2">
                                 <p class="preview-subject ellipsis font-weight-medium text-dark"><?php echo $row['memberName'] ?></p>
-                                <p class="fw-light small-text mb-0"><td><?php echo $row['memberNote'] ?></td></p>
+                                <p class="fw-light small-text mb-0">
+                                    <td><?php echo $row['memberNote'] ?></td>
+                                </p>
                             </div>
                         </a>
                     <?php
