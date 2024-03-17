@@ -908,3 +908,7 @@ figcaption{
     display: none;
   }
 }
+
+.footer-payment {
+  padding-block: 10px;
+}

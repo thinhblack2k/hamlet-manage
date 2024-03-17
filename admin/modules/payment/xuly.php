@@ -43,7 +43,7 @@ if (isset($_POST['spendStatus'])) {
 $paymentGroup = $_POST['paymentGroup']; //nhóm những người chia tiền 
 
 if (isset($_POST['spend_add'])) {
-    $sql_add = "INSERT INTO spending(spendName, spendTotal, spendMember, spendGroup, memberCount, groupId, spendDate) VALUE('" . $spendName . "', '" . $spendTotal . "', '" . $spendMember . "',  '" . $spendGroup . "', '" . $memberCount . "', '" . $groupId . "', '" . $spendDate . "')";
+    $sql_add = "INSERT INTO spending(spendName, spendTotal, spendMember, spendGroup, memberCount, groupId, spendDate, spendingStatus) VALUE('" . $spendName . "', '" . $spendTotal . "', '" . $spendMember . "',  '" . $spendGroup . "', '" . $memberCount . "', '" . $groupId . "', '" . $spendDate . "', '2')";
     mysqli_query($mysqli, $sql_add);
     foreach ($paymentGroup as $memberId) {
         $sql_insert_paymentgroup = "INSERT INTO paymentgroup(spendGroup, memberId, groupId) VALUE('" . $spendGroup . "', '" . $memberId . "', '" . $groupId . "');";
@@ -55,7 +55,7 @@ if (isset($_POST['spend_add'])) {
         $member = mysqli_fetch_array($query_get_member);
         $totalLossNew = $member['totalLoss'] + ($spendTotal / $memberCount);
 
-        $sql_update_member = "UPDATE member SET totalLoss = '" . $totalLossNew . "', memberNote = 'Tham gia khoản chi' WHERE memberId = $memberId";
+        $sql_update_member = "UPDATE member SET totalLoss = '" . $totalLossNew . "', memberNote = 'Vừa được thanh' WHERE memberId = $memberId";
         mysqli_query($mysqli, $sql_update_member);
     }
     // Lấy ra thông tin của thành viên đã chi cũ
@@ -64,10 +64,10 @@ if (isset($_POST['spend_add'])) {
     $member = mysqli_fetch_array($query_get_member_spending);
     $totalExpendNew = $member['totalExpend'] + $spendTotal;
 
-    $sql_update_member_spending = "UPDATE member SET totalExpend = '" . $totalExpendNew . "', memberNote = 'Vừa thêm 1 khoản chi mới'  WHERE memberId = $spendMember";
+    $sql_update_member_spending = "UPDATE member SET totalExpend = '" . $totalExpendNew . "', memberNote = 'Vừa thực hiện thanh toán'  WHERE memberId = $spendMember";
     mysqli_query($mysqli, $sql_update_member_spending);
 
-    header('Location: ../../index.php?action=spending&query=spending_list&message=success');
+    header('Location: ../../index.php?action=payment&query=payment_list&message=success');
 } elseif (isset($_POST['spend_edit'])) {
     $spendId = $_GET['spendId']; // Lấy spendId từ query string
 
@@ -134,10 +134,10 @@ if (isset($_POST['spend_add'])) {
 
     // Cập nhật lại totalExpend của người chi trả
     $totalExpendNew = $totalAmount + $spendTotal;
-    $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa thay đổi 1 khoản chi' WHERE memberId = '$spendMember'";
+    $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa thay đổi 1 khoản thanh toán' WHERE memberId = '$spendMember'";
     mysqli_query($mysqli, $sql_update_member_spending);
 
-    header('Location: ../../index.php?action=spending&query=spending_list&message=success');
+    header('Location: ../../index.php?action=payment&query=payment_list&message=success');
 } else {
     foreach ($spend_ids as $spend_id) {
         // Lấy thông tin của spending cần xóa
@@ -180,8 +180,8 @@ if (isset($_POST['spend_add'])) {
 
         // Cập nhật lại totalExpend của người tạm thanh toán
         $totalExpendNew = $member_expend['totalExpend'] - $spending['spendTotal'];
-        $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa xóa 1 khoản chi' WHERE memberId = " . $spending['spendMember'];
+        $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa xóa 1 khoản thanh toán' WHERE memberId = " . $spending['spendMember'];
         mysqli_query($mysqli, $sql_update_member_spending);
     }
-    header('Location: ../../index.php?action=spending&query=spending_list&message=success');
+    header('Location: ../../index.php?action=payment&query=payment_list&message=success');
 }

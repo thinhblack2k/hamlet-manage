@@ -2,22 +2,22 @@
 <div class="row" style="margin-bottom: 10px;">
     <div class="col d-flex" style="justify-content: space-between; align-items: flex-end;">
         <h3 class="card-title" style="margin: 0;">
-            Thêm khoản chi
+            Thêm khoản thanh toán
         </h3>
-        <a href="index.php?action=spending&query=spending_list&groupId=all" class="btn btn-outline-dark btn-fw">
+        <a href="index.php?action=payment&query=payment_list&groupId=all" class="btn btn-outline-dark btn-fw">
             <i class="mdi mdi-reply"></i>
             Quay lại
         </a>
     </div>
 </div>
-<form method="POST" action="modules/spending/xuly.php" enctype="multipart/form-data">
+<form method="POST" action="modules/payment/xuly.php" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-8 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <div class="card-content">
                         <div class="input-item form-group">
-                            <label for="spendName" class="d-block">Tên khoản chi</label>
+                            <label for="spendName" class="d-block">Tên khoản thanh toán</label>
                             <input type="text" id="spendName" name="spendName" class="form-control" value="" placeholder="spend name" required>
                         </div>
                         <div class="input-item form-group">
@@ -26,9 +26,10 @@
                         </div>
                         <div class="input-item form-group">
                             <div class="header-group">
-                                <label for="paymentGroup" class="d-block">Thành viên tham gia (<span id="totalCountSpan" class="totalCount">0 thành viên</span>) </label>
-                                <button class="btn-select-all">Tất cả</button>
+                                <label for="paymentGroup" class="d-block">Thành viên được thanh toán (<span class="totalCount">Chú ý chỉ hỗ trợ thanh toán 1:1</span>) </label>
+                                <!-- <button class="btn-select-all">Tất cả</button> -->
                             </div>
+                            <small id="textHelp" class="form-text text-muted text-success"><span class="fa fa-info mt-1"></span>  Chỉ được chọn 1 người để thanh toán</small>
                             <div class="member-box">
                                 <?php
                                 $sql_member_list = "SELECT * FROM member ORDER BY memberId ASC";
@@ -62,7 +63,7 @@
                     <div class="card-content">
                         <div class="main-pane-top">
                             <div class="input-item form-group">
-                                <label for="title" class="d-block">Ngày chi tiêu</label>
+                                <label for="title" class="d-block">Ngày thanh toán</label>
                                 <input type="date" name="spendDate" id="spendDate" class="form-control" placeholder="spend date">
                             </div>
                             <div class="input-item form-group">
@@ -80,7 +81,7 @@
                                 </select>
                             </div>
                             <div class="input-item form-group">
-                                <label for="spendMember" class="d-block">Ai là người chi tiêu</label>
+                                <label for="spendMember" class="d-block">Ai là người thanh toán</label>
                                 <div class="member-box">
                                     <?php
                                     $sql_member_list = "SELECT * FROM member ORDER BY memberId ASC";
@@ -111,7 +112,7 @@
 <div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <div><span>Ai là người chi tiêu?</span></div>
+        <div><span>Ai là người thanh toán?</span></div>
         <div class="input-item form-group">
             <label for="spendMember" class="d-block">danh sách thành viên</label>
             <div class="member-box">

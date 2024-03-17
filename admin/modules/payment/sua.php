@@ -6,9 +6,9 @@ $query_spending_edit = mysqli_query($mysqli, $sql_spending_edit);
 <div class="row" style="margin-bottom: 10px;">
     <div class="col d-flex" style="justify-content: space-between; align-items: flex-end;">
         <h3 class="card-title" style="margin: 0;">
-            Sửa thông tin chi tiêu
+            Sửa thông tin thanh toán
         </h3>
-        <a href="index.php?action=spending&query=spending_list&groupId=all" class="btn btn-outline-dark btn-fw">
+        <a href="index.php?action=payment&query=payment_list&groupId=all" class="btn btn-outline-dark btn-fw">
             <i class="mdi mdi-reply"></i>
             Quay lại
         </a>
@@ -17,14 +17,14 @@ $query_spending_edit = mysqli_query($mysqli, $sql_spending_edit);
 <?php
 while ($row = mysqli_fetch_array($query_spending_edit)) {
 ?>
-    <form method="POST" action="modules/spending/xuly.php?spendId=<?php echo $_GET['spendId'] ?>" enctype="multipart/form-data">
+    <form method="POST" action="modules/payment/xuly.php?spendId=<?php echo $_GET['spendId'] ?>" enctype="multipart/form-data">
         <div class="row">
             <div class="col-lg-8 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div class="card-content">
                             <div class="input-item form-group">
-                                <label for="spendName" class="d-block">Tên khoản chi</label>
+                                <label for="spendName" class="d-block">Tên khoản thanh toán</label>
                                 <input type="text" id="spendName" name="spendName" class="form-control" value="<?php echo $row['spendName'] ?>" placeholder="spend name" required>
                             </div>
                             <div class="input-item form-group">
@@ -33,9 +33,10 @@ while ($row = mysqli_fetch_array($query_spending_edit)) {
                             </div>
                             <div class="input-item form-group">
                                 <div class="header-group">
-                                    <label for="paymentGroup" class="d-block">Thành viên tham gia (<span id="totalCountSpan" class="totalCount"></span>) </label>
-                                    <button class="btn-select-all">Tất cả</button>
+                                    <label for="paymentGroup" class="d-block">Người được thanh toán (<span class="totalCount">Chú ý chỉ hỗ trợ thanh toán 1:1</span>) </label>
+                                    <!-- <button class="btn-select-all">Tất cả</button> -->
                                 </div>
+                                <small id="textHelp" class="form-text text-muted text-success"><span class="fa fa-info mt-1"></span>  Chỉ được chọn 1 người để thanh toán.</small>
                                 <div class="member-box">
                                     <?php
                                     $sql_member_list = "SELECT * FROM member ORDER BY memberId ASC";
@@ -79,7 +80,7 @@ while ($row = mysqli_fetch_array($query_spending_edit)) {
                         <div class="card-content">
                             <div class="main-pane-top">
                                 <div class="input-item form-group">
-                                    <label for="title" class="d-block">Ngày chi tiêu</label>
+                                    <label for="title" class="d-block">Ngày thanh toán</label>
                                     <input type="date" name="spendDate" value="<?php echo $row['spendDate']; ?>" id="spendDate" class="form-control" placeholder="spend date" required>
                                 </div>
                                 <div class="input-item form-group">
@@ -99,7 +100,7 @@ while ($row = mysqli_fetch_array($query_spending_edit)) {
                                     </select>
                                 </div>
                                 <div class="input-item form-group">
-                                    <label for="spendMember" class="d-block">Ai là người chi tiêu</label>
+                                    <label for="spendMember" class="d-block">Ai là người thanh toán</label>
                                     <div class="member-box">
                                         <?php
                                         $sql_member_list = "SELECT * FROM member ORDER BY memberId ASC";
@@ -135,6 +136,7 @@ while ($row = mysqli_fetch_array($query_spending_edit)) {
 <?php
 }
 ?>
+
 <script>
     let uploadButton = document.getElementById("spendImage");
     let chosenImage = document.getElementById("chosen-image");

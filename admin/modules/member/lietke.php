@@ -23,7 +23,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-content">
+                    <div class="">
                         <div class="main-pane-top d-flex justify-center align-center">
                             <div class="input__search p-relative">
                                 <form method="POST" class="search-form" action="?action=member&query=member_search">
@@ -50,7 +50,7 @@
                                         <th></th>
                                         <th>Tên</th>
                                         <th>Tổng chi</th>
-                                        <th>Tổng nợ</th>
+                                        <th>Tổng nhận</th>
                                         <th>Số dư</th>
                                         <th>Ghi chú</th>
                                     </tr>

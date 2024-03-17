@@ -54,6 +54,7 @@
                                         <figcaption id="file-name"></figcaption>
                                     </figure>
                                     <input type="file" class="d-none" id="memberImage" name="memberImage" accept="image/*">
+                                    <small id="textHelp" class="form-text text-muted text-success"><span class="fa fa-info mt-1"></span>  Không được tải lên ảnh có dung lượng quá lớn.</small>
                                     <label class="label-for-image" for="memberImage">
                                         <i class="fas fa-upload"></i> &nbsp; Tải lên hình ảnh
                                     </label>
@@ -81,3 +82,37 @@
         fileName.textContent = uploadButton.files[0].name;
     }
 </script>
+
+<script>
+    function showSuccessToast() {
+        toast({
+            title: "Success",
+            message: "Cập nhật thành công",
+            type: "success",
+            duration: 0,
+        });
+    }
+
+    function showErrorToast() {
+        toast({
+            title: "Error",
+            message: "Kích thức ảnh quá lớn",
+            type: "error",
+            duration: 0,
+        });
+    }
+</script>
+
+<?php
+if (isset($_GET['message']) && $_GET['message'] == 'success') {
+    echo '<script>';
+    echo 'showSuccessToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=member&query=member_add");';
+    echo '</script>';
+} elseif (isset($_GET['message']) && $_GET['message'] == 'error') {
+    echo '<script>';
+    echo 'showErrorToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=member&query=member_add");';
+    echo '</script>';
+}
+?>

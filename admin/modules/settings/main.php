@@ -5,11 +5,65 @@
         </h3>
     </div>
 </div>
-<form method="POST" action="modules/product/xuly.php" id="form-product" enctype="multipart/form-data">
+<form method="POST" action="modules/settings/xuly.php" id="form-product" enctype="multipart/form-data">
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
-                
+                <div class="card-body">
+                    <div class="card-content">
+                        <div>
+                            <p class="color-t-red">
+                                Cảnh báo những hành động khi thực hiện ở trong đây có thể ảnh hưởng tới dữ liệu của hệ thống!!!
+                            </p>
+                            <?php
+                            if (
+                                isset($_SESSION["accountRole"]) &&
+                                $_SESSION["accountRole"] != 1
+                            ) { 
+                            ?>
+                            <p class="color-t-green">
+                                Vui lòng đăng nhập bằng tài khoản có quyền quản trị cao nhất để thực hiện các thao tác này!!!
+                            </p> 
+                            <?php 
+                                }
+                            ?>
+                        </div>
+                        <label for="codeText">Nhập vào cụm từ xác thực: </label>
+                        <input type="text" name="codebaomat" class="form-control p-input" id="codeText" aria-describedby="textHelp" placeholder="Nhập vào đoạn mã">
+                        <small id="textHelp" class="form-text text-muted text-success"><span class="fa fa-info mt-1"></span>  Cụm từ gồm 9 ký tự được tạo ra bởi founder của website này dùng để xác thực khi thực hiện các thao tác liên quan đến hệ thống.</small>
+                        <div class="template-demo">
+                            <button type="submit" name="thanhkhoan" class="btn btn-inverse-success btn-fw" <?php
+if (
+    isset($_SESSION["accountRole"]) &&
+    $_SESSION["accountRole"] != 1
+) { ?> disabled <?php }
+?>>Thanh khoản</button>
+                            <button type="submit" name="chotchitieu" class="btn btn-inverse-info btn-fw" <?php
+if (
+    isset($_SESSION["accountRole"]) &&
+    $_SESSION["accountRole"] != 1
+) { ?> disabled <?php }
+?>>Chốt chi tiêu</button>
+                            <button type="submit" name="lammoichitieu" class="btn btn-inverse-warning btn-fw" <?php
+if (
+    isset($_SESSION["accountRole"]) &&
+    $_SESSION["accountRole"] != 1
+) { ?> disabled <?php }
+?>>Xóa chi tiêu...</button>
+                            <button type="submit" name="resettoanbohethong" class="btn btn-inverse-danger btn-fw" <?php
+if (
+    isset($_SESSION["accountRole"]) &&
+    $_SESSION["accountRole"] != 1
+) { ?> disabled <?php }
+?>>Xóa toàn bộ .</button>
+                        </div>
+                        <div style="margin-top: 50px; text-align: center;">
+                            <small class="form-text text-muted text-success text-center">
+                                create by edricdang
+                            </small>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -78,3 +132,37 @@
         fileName2.textContent = uploadButton2.files[0].name;
     }
 </script>
+
+<script>
+    function showSuccessToast() {
+        toast({
+            title: "Success",
+            message: "Cập nhật thành công",
+            type: "success",
+            duration: 0,
+        });
+    }
+
+    function showErrorToast() {
+        toast({
+            title: "Error",
+            message: "Mã xác thực không hợp lệ",
+            type: "error",
+            duration: 0,
+        });
+    }
+</script>
+
+<?php
+if (isset($_GET['message']) && $_GET['message'] == 'success') {
+    echo '<script>';
+    echo 'showSuccessToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=settings&query=settings");';
+    echo '</script>';
+} elseif (isset($_GET['message']) && $_GET['message'] == 'error') {
+    echo '<script>';
+    echo 'showErrorToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=settings&query=settings");';
+    echo '</script>';
+}
+?>

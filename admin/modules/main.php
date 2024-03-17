@@ -27,6 +27,15 @@
         elseif($action =='spending' && $query == 'spending_detail') {
             include("./modules/spending/chitiet.php");
         }
+        elseif ($action == 'payment' && $query == 'payment_list') {
+            include("./modules/payment/lietke.php");
+        }
+        elseif ($action == 'payment' && $query == 'payment_add') {
+            include("./modules/payment/them.php");
+        }
+        elseif ($action == 'payment' && $query == 'payment_edit') {
+            include("./modules/payment/sua.php");
+        }
         elseif($action =='groupspend' && $query == 'groupspend_add') {
             include("./modules/groupspend/them.php");
         }

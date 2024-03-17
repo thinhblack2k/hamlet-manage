@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="css/dialog.css">
 <?php
 $sql_member_edit = "SELECT * FROM member WHERE memberId = '$_GET[memberId]' LIMIT 1";
 $query_member_edit = mysqli_query($mysqli, $sql_member_edit);
@@ -39,10 +40,14 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
                             <div class="input-item form-group">
                                 <label for="title" class="d-block">Tổng nợ</label>
                                 <input type="number" name="totalLoss" class="form-control" value="<?php echo $item['totalLoss'] ?>" placeholder="total loss" <?php
-                                                                                                                                                            if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] != 1) {
-                                                                                                                                                            ?> disabled <?php
-                                                                                                                                                                            }
-                                                                                                                                                                                ?> required>
+                                                                                                                                                                if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] != 1) {
+                                                                                                                                                                ?> disabled <?php
+                                                                                                                                                                        }
+                                                                                                                                                                            ?> required>
+                            </div>
+                            <div class="input-item form-group">
+                                <label for="title" class="d-block">Số dư</label>
+                                <input type="number" name="totalSurplus" class="form-control" value="<?php echo $item['totalExpend'] - $item['totalLoss'] ?>" placeholder="Số dư" disabled>
                             </div>
                             <div class="input-item form-group">
                                 <label for="title" class="d-block">Ghi chú</label>
@@ -52,8 +57,9 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
                                 <i class="ti-file btn-icon-prepend"></i>
                                 Sửa
                             </button>
-
-
+                            <a type="button" href="index.php?action=payment&query=payment_list" class="btn btn-secondary btn-icon-text" style="line-height: 16px;">
+                                Thanh toán
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -71,6 +77,7 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
                                             <figcaption id="file-name"></figcaption>
                                         </figure>
                                         <input type="file" class="d-none" id="memberImage" name="memberImage" accept="image/*">
+                                        <small id="textHelp" class="form-text text-muted text-success"><span class="fa fa-info mt-1"></span>  Không được tải lên ảnh có dung lượng quá lớn.</small>
                                         <label class="label-for-image" for="memberImage">
                                             <i class="fas fa-upload"></i> &nbsp; Tải lên hình ảnh
                                         </label>
@@ -101,3 +108,51 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
         fileName.textContent = uploadButton.files[0].name;
     }
 </script>
+
+<script>
+    function showSuccessToast() {
+        toast({
+            title: "Success",
+            message: "Cập nhật thành công",
+            type: "success",
+            duration: 0,
+        });
+    }
+
+    function showWarningToast() {
+        toast({
+            title: "Error",
+            message: "Không tồn tại khoản thanh toán",
+            type: "error",
+            duration: 0,
+        });
+    }
+
+    function showErrorToast() {
+        toast({
+            title: "Error",
+            message: "Kích thức ảnh quá lớn",
+            type: "error",
+            duration: 0,
+        });
+    }
+</script>
+
+<?php
+if (isset($_GET['message']) && $_GET['message'] == 'success') {
+    echo '<script>';
+    echo 'showSuccessToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=member&query=member_edit");';
+    echo '</script>';
+} elseif (isset($_GET['message']) && $_GET['message'] == 'error') {
+    echo '<script>';
+    echo 'showErrorToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=member&query=member_edit");';
+    echo '</script>';
+} elseif (isset($_GET['message']) && $_GET['message'] == 'warning') {
+    echo '<script>';
+    echo 'showWarningToast();';
+    echo 'window.history.pushState(null, "", "index.php?action=member&query=member_edit");';
+    echo '</script>';
+}
+?>

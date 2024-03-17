@@ -1,5 +1,13 @@
 <?php
 include('../../config/config.php');
+
+// Hàm kiểm tra kích thước tệp ảnh
+function isImageSizeValid($fileSize)
+{
+    $maxFileSize = 1048576; // 1MB = 1048576 byte
+    return $fileSize <= $maxFileSize;
+}
+
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
 } else {
@@ -22,28 +30,34 @@ $accountImage = $_FILES['accountImage']['name'];
 $accountImage_tmp = $_FILES['accountImage']['tmp_name'];
 $accountImage = time() . '_' . $accountImage;
 
-print_r($role);
-
 if (isset($_POST['account_add'])) {
-    $sql_add = "INSERT INTO account(userName, accountPassword, lastName, firstName, accountImage, accountRole , accountStatus) VALUE('" . $userName . "', '" . $password . "', '" . $lastName . "',  '" . $firstName . "', '" . $accountImage . "', '" . $role . "','" . $status . "')";
-    echo $sql_add;
-    mysqli_query($mysqli, $sql_add);
-    move_uploaded_file($accountImage_tmp, 'uploads/' . $accountImage);
-    header('Location: ../../index.php?action=account&query=account_list&message=success');
+    if (is_uploaded_file($accountImage_tmp) && isImageSizeValid($_FILES['accountImage']['size'])) {
+        $sql_add = "INSERT INTO account(userName, accountPassword, lastName, firstName, accountImage, accountRole , accountStatus) VALUE('" . $userName . "', '" . $password . "', '" . $lastName . "',  '" . $firstName . "', '" . $accountImage . "', '" . $role . "','" . $status . "')";
+        echo $sql_add;
+        mysqli_query($mysqli, $sql_add);
+        move_uploaded_file($accountImage_tmp, 'uploads/' . $accountImage);
+        header('Location: ../../index.php?action=account&query=account_list&message=success');
+    } else {
+        header('Location: ../../index.php?action=account&query=account_add&message=error');
+    }
 }
 
 if (isset($_POST['account_edit'])) {
+
     if ($_FILES['accountImage']['name'] != '') {
-        move_uploaded_file($accountImage_tmp, 'uploads/' . $accountImage);
-        $sql = "SELECT * FROM account WHERE accountId = '$accountId' LIMIT 1";
-        $query = mysqli_query($mysqli, $sql);
-        while ($row = mysqli_fetch_array($query)) {
-            unlink('uploads/' . $row['accountImage']);
+        if (is_uploaded_file($accountImage_tmp) && isImageSizeValid($_FILES['accountImage']['size'])) {
+            move_uploaded_file($accountImage_tmp, 'uploads/' . $accountImage);
+            $sql = "SELECT * FROM account WHERE accountId = '$accountId' LIMIT 1";
+            $query = mysqli_query($mysqli, $sql);
+            while ($row = mysqli_fetch_array($query)) {
+                unlink('uploads/' . $row['accountImage']);
+            }
+            $sql_update = "UPDATE account SET userName='" . $userName . "', lastName = '" . $lastName . "', firstName = '" . $firstName . "', accountImage = '" . $accountImage . "', accountRole = '" . $role . "', accountStatus = '" . $status . "'  WHERE accountId = '$_GET[accountId]'";
+        } else {
+            header('Location: ../../index.php?action=account&query=account_add&message=error');
         }
-        $sql_update = "UPDATE account SET userName='".$userName."', lastName = '".$lastName."', firstName = '".$firstName."', accountImage = '".$accountImage."', accountRole = '".$role."', accountStatus = '".$status."'  WHERE accountId = '$_GET[accountId]'";
-    }
-    else {
-        $sql_update = "UPDATE account SET userName='".$userName."', lastName = '".$lastName."', firstName = '".$firstName."', accountRole = '".$role."', accountStatus = '".$status."'  WHERE accountId = '$_GET[accountId]'";
+    } else {
+        $sql_update = "UPDATE account SET userName='" . $userName . "', lastName = '" . $lastName . "', firstName = '" . $firstName . "', accountRole = '" . $role . "', accountStatus = '" . $status . "'  WHERE accountId = '$_GET[accountId]'";
     }
     mysqli_query($mysqli, $sql_update);
     header('Location: ../../index.php?action=account&query=account_list&message=success');

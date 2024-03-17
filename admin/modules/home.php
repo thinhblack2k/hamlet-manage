@@ -71,6 +71,44 @@ if ($query_total_spending) {
                         <table class="table table-hover table-action">
                             <thead>
                                 <tr>
+                                    <th>Image</th>
+                                    <th>Tên</th>
+                                    <th>Số dư</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 0;
+                                while ($row = mysqli_fetch_array($query_member_list)) {
+                                    $i++;
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <div class="image-cover">
+                                                <img src="modules/member/uploads/<?php echo $row['memberImage'] ?>" alt="<?php echo $row['memberName'] ?>">
+                                            </div>
+                                        </td>
+                                        <td><?php echo $row['memberName'] ?></td>
+                                        <td><?php echo number_format($row['totalExpend'] - $row['totalLoss']) ?>đ</td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-content">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-action">
+                            <thead>
+                                <tr>
                                     <th>Ngày</th>
                                     <th>Nội dung chi</th>
                                     <th>Người chi</th>
@@ -97,46 +135,6 @@ if ($query_total_spending) {
                                             ?>
                                         </td>
                                         <td><?php echo number_format($row['spendTotal']) ?>đ</td>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <div class="card-content">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-action">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Tên</th>
-                                    <th>Số dư</th>
-                                    <th>Ghi chú</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $i = 0;
-                                while ($row = mysqli_fetch_array($query_member_list)) {
-                                    $i++;
-                                ?>
-                                    <tr>
-                                        <td>
-                                            <div class="image-cover">
-                                                <img src="modules/member/uploads/<?php echo $row['memberImage'] ?>" alt="<?php echo $row['memberName'] ?>">
-                                            </div>
-                                        </td>
-                                        <td><?php echo $row['memberName'] ?></td>
-                                        <td><?php echo number_format($row['totalExpend'] - $row['totalLoss']) ?>đ</td>
-                                        <td><?php echo $row['memberNote'] ?></td>
                                     </tr>
                                 <?php
                                 }

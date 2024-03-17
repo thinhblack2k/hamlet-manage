@@ -23,13 +23,19 @@
         </li>
         <li class="nav-item <?php if ($action === 'spending') { echo "active"; } ?>">
             <a class="nav-link" href="index.php?action=spending&query=spending_list">
-                <i class="menu-icon mdi mdi-table"></i>
+                <i class="menu-icon mdi mdi-calendar-multiple-check"></i>
                 <span class="menu-title">Chi tiêu</span>
+            </a>
+        </li>
+        <li class="nav-item <?php if ($action === 'payment') { echo "active"; } ?>">
+            <a class="nav-link" href="index.php?action=payment&query=payment_list">
+                <i class="mdi mdi-barcode-scan menu-icon"></i>
+                <span class="menu-title">Thanh toán</span>
             </a>
         </li>
         <li class="nav-item <?php if ($action === 'groupspend') { echo "active"; } ?>">
             <a class="nav-link" href="index.php?action=groupspend&query=groupspend_list">
-                <i class="menu-icon mdi mdi-flask"></i>
+                <i class="menu-icon mdi mdi-folder-multiple-outline"></i>
                 <span class="menu-title">Loại chi tiêu</span>
             </a>
         </li>

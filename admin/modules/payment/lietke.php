@@ -1,16 +1,16 @@
 <?php
-$sql_spending_list = "SELECT * FROM spending WHERE spendingStatus = 1 ORDER BY spendDate DESC, spendId DESC LIMIT 25";
+$sql_spending_list = "SELECT * FROM spending WHERE spendingStatus = 2 ORDER BY spendDate DESC, spendId DESC LIMIT 25";
 $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
 ?>
 <div class="row">
     <div class="col">
         <div class="header__list d-flex space-between align-center">
-            <h3 class="card-title" style="margin: 0;">Danh sách chi tiêu</h3>
+            <h3 class="card-title" style="margin: 0;">Lịch sử thanh toán</h3>
             <div class="action_group">
                 <?php
                 if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] == 1 or $_SESSION['accountRole'] == 0) {
                 ?>
-                    <a href="?action=spending&query=spending_add" class="button button-dark">Thêm khoản chi</a>
+                    <a href="?action=payment&query=payment_add" class="button button-dark">Thanh toán</a>
                 <?php
                 }
                 ?>
@@ -26,9 +26,9 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                 <div class="">
                     <div class="main-pane-top d-flex justify-center align-center">
                         <div class="input__search p-relative">
-                            <form method="POST" class="search-form" action="?action=spending&query=spending_search">
+                            <form method="POST" class="search-form" action="?action=payment&query=payment_search">
                                 <i class="icon-search p-absolute"></i>
-                                <input type="search" class="form-control" name="spending_search" placeholder="Search Here" title="Search here">
+                                <input type="search" class="form-control" name="payment_search" placeholder="Search Here" title="Search here">
                             </form>
                         </div>
                     </div>
@@ -48,9 +48,9 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                                         ?>
                                     </th>
                                     <th>Ngày</th>
-                                    <th>Nội dung chi</th>
-                                    <th>Người chi</th>
-                                    <th class="text-center">Số lượng</th>
+                                    <th>Nội dung</th>
+                                    <th>Người thanh toán</th>
+                                    <th class="text-center">Số tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,7 +64,7 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                                             <?php
                                             if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] == 1) {
                                             ?>
-                                                <a href="?action=spending&query=spending_edit&spendId=<?php echo $row['spendId'] ?>">
+                                                <a href="?action=payment&query=payment_edit&spendId=<?php echo $row['spendId'] ?>">
                                                     <div class="icon-edit">
                                                         <img class="w-100 h-100" src="images/icon-edit.png" alt="edit">
                                                     </div>
@@ -92,7 +92,7 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                                             echo $member['memberName'];
                                             ?>
                                         </td>
-                                        <td class="text-center"><?php echo $row['memberCount'] ?></td>
+                                        <td class="text-center"><?php echo number_format($row['spendTotal']) ?>đ</td>
                                     </tr>
                                 <?php
                                 }
