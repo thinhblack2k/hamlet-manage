@@ -22,6 +22,7 @@ if (isset($_GET['memberId'])) {
 }
 
 $memberName = $_POST['memberName'];
+$memberEmail = $_POST['memberEmail'];
 $totalExpend = $_POST['totalExpend'];
 $totalLoss = $_POST['totalLoss'];
 $memberNote = $_POST['memberNote'];
@@ -31,7 +32,7 @@ $memberImage = time() . '_' . $memberImage;
 
 if (isset($_POST['member_add'])) {
     if (is_uploaded_file($memberImage_tmp) && isImageSizeValid($_FILES['memberImage']['size'])) {
-        $sql_add = "INSERT INTO member(memberName, totalExpend, totalLoss, memberNote, memberImage) VALUE('".$memberName."', '".$totalExpend."', '".$totalLoss."', '".$memberNote."', '".$memberImage."')";
+        $sql_add = "INSERT INTO member(memberName, memberEmail, totalExpend, totalLoss, memberNote, memberImage) VALUE('".$memberName."', '".$memberEmail."', '".$totalExpend."', '".$totalLoss."', '".$memberNote."', '".$memberImage."')";
         mysqli_query($mysqli, $sql_add);
         move_uploaded_file($memberImage_tmp, 'uploads/'.$memberImage);
         header('Location: ../../index.php?action=member&query=member_list');
@@ -47,13 +48,13 @@ if (isset($_POST['member_add'])) {
             while ($row = mysqli_fetch_array($query)) {
                 unlink('uploads/' . $row['memberImage']);
             }
-            $sql_update = "UPDATE member SET memberName='".$memberName."', totalExpend = '".$totalExpend."', totalLoss = '".$totalLoss."', memberNote = '".$memberNote."', memberImage = '".$memberImage."'  WHERE memberId = '$_GET[memberId]'";
+            $sql_update = "UPDATE member SET memberName='".$memberName."', memberEmail='".$memberEmail."', totalExpend = '".$totalExpend."', totalLoss = '".$totalLoss."', memberNote = '".$memberNote."', memberImage = '".$memberImage."'  WHERE memberId = '$_GET[memberId]'";
         } else {
             header('Location: ../../index.php?action=member&query=member_edit&message=error');
             exit; // Dừng việc xử lý tiếp theo nếu kích thước không hợp lệ
         }
     } else {
-        $sql_update = "UPDATE member SET memberName='".$memberName."', totalExpend = '".$totalExpend."', totalLoss = '".$totalLoss."', memberNote = '".$memberNote."'  WHERE memberId = '$_GET[memberId]'";
+        $sql_update = "UPDATE member SET memberName='".$memberName."', memberEmail='".$memberEmail."', totalExpend = '".$totalExpend."', totalLoss = '".$totalLoss."', memberNote = '".$memberNote."'  WHERE memberId = '$_GET[memberId]'";
     }
     
     mysqli_query($mysqli, $sql_update);

@@ -86,7 +86,7 @@
                                             </td>
                                             <td>
                                                 <div class="image-cover">
-                                                    <img src="modules/member/uploads/<?php echo $row['memberImage'] ?>" alt="<?php echo $row['memberName'] ?>">
+                                                    <img class="image-cover__avt" src="modules/member/uploads/<?php echo $row['memberImage'] ?>" alt="<?php echo $row['memberName'] ?>">
                                                 </div>
                                             </td>
                                             <td><?php echo $row['memberName'] ?></td>

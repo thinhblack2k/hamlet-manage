@@ -19,43 +19,43 @@
                             if (
                                 isset($_SESSION["accountRole"]) &&
                                 $_SESSION["accountRole"] != 1
-                            ) { 
+                            ) {
                             ?>
-                            <p class="color-t-green">
-                                Vui lòng đăng nhập bằng tài khoản có quyền quản trị cao nhất để thực hiện các thao tác này!!!
-                            </p> 
-                            <?php 
-                                }
+                                <p class="color-t-green">
+                                    Vui lòng đăng nhập bằng tài khoản có quyền quản trị cao nhất để thực hiện các thao tác này!!!
+                                </p>
+                            <?php
+                            }
                             ?>
                         </div>
                         <label for="codeText">Nhập vào cụm từ xác thực: </label>
                         <input type="text" name="codebaomat" class="form-control p-input" id="codeText" aria-describedby="textHelp" placeholder="Nhập vào đoạn mã">
                         <small id="textHelp" class="form-text text-muted text-success"><span class="fa fa-info mt-1"></span>  Cụm từ gồm 9 ký tự được tạo ra bởi founder của website này dùng để xác thực khi thực hiện các thao tác liên quan đến hệ thống.</small>
                         <div class="template-demo">
-                            <button type="submit" name="thanhkhoan" class="btn btn-inverse-success btn-fw" <?php
-if (
-    isset($_SESSION["accountRole"]) &&
-    $_SESSION["accountRole"] != 1
-) { ?> disabled <?php }
-?>>Thanh khoản</button>
                             <button type="submit" name="chotchitieu" class="btn btn-inverse-info btn-fw" <?php
-if (
-    isset($_SESSION["accountRole"]) &&
-    $_SESSION["accountRole"] != 1
-) { ?> disabled <?php }
-?>>Chốt chi tiêu</button>
+                                                                                                            if (
+                                                                                                                isset($_SESSION["accountRole"]) &&
+                                                                                                                $_SESSION["accountRole"] != 1
+                                                                                                            ) { ?> disabled <?php }
+                ?>>Chốt chi tiêu</button>
+                            <button type="submit" name="thanhkhoan" class="btn btn-inverse-success btn-fw" <?php
+                                                                                                            if (
+                                                                                                                isset($_SESSION["accountRole"]) &&
+                                                                                                                $_SESSION["accountRole"] != 1
+                                                                                                            ) { ?> disabled <?php }
+                ?>>Thanh khoản</button>
                             <button type="submit" name="lammoichitieu" class="btn btn-inverse-warning btn-fw" <?php
-if (
-    isset($_SESSION["accountRole"]) &&
-    $_SESSION["accountRole"] != 1
-) { ?> disabled <?php }
-?>>Xóa chi tiêu...</button>
+                                                                                                                if (
+                                                                                                                    isset($_SESSION["accountRole"]) &&
+                                                                                                                    $_SESSION["accountRole"] != 1
+                                                                                                                ) { ?> disabled <?php }
+                ?>>Xóa chi tiêu...</button>
                             <button type="submit" name="resettoanbohethong" class="btn btn-inverse-danger btn-fw" <?php
-if (
-    isset($_SESSION["accountRole"]) &&
-    $_SESSION["accountRole"] != 1
-) { ?> disabled <?php }
-?>>Xóa toàn bộ .</button>
+                                                                                                                    if (
+                                                                                                                        isset($_SESSION["accountRole"]) &&
+                                                                                                                        $_SESSION["accountRole"] != 1
+                                                                                                                    ) { ?> disabled <?php }
+                ?>>Xóa toàn bộ .</button>
                         </div>
                         <div style="margin-top: 50px; text-align: center;">
                             <small class="form-text text-muted text-success text-center">

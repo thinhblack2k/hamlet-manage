@@ -30,6 +30,10 @@ while ($item = mysqli_fetch_array($query_member_edit)) {
                                 <input type="text" name="memberName" class="form-control" value="<?php echo $item['memberName'] ?>" placeholder="member name" required>
                             </div>
                             <div class="input-item form-group">
+                                <label for="title" class="d-block">Email</label>
+                                <input type="email" name="memberEmail" class="form-control" value="<?php echo $item['memberEmail'] ?>" placeholder="member email">
+                            </div>
+                            <div class="input-item form-group">
                                 <label for="title" class="d-block">Tổng chi</label>
                                 <input type="number" name="totalExpend" class="form-control" value="<?php echo $item['totalExpend'] ?>" placeholder="total expend" <?php
                                                                                                                                                                     if (isset($_SESSION['accountRole']) && $_SESSION['accountRole'] != 1) {

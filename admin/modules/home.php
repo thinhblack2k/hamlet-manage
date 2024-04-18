@@ -21,27 +21,27 @@ if ($query_total_spending) {
 }
 ?>
 <div class="row">
-    <div class="col-lg-4 col-md-4 grid-margin stretch-card">
+    <div class="col-lg-4 col-md-4 col-6 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <div class="card-content">
                     <h3 class="box-title">Số thành viên</h3>
                     <span class="box-number color-t-yellow"><?php echo $member_count ?></span>
                     <div class="box-number-new">
-                        <p>Thành viên tham gia</p>
+                        <p>Thành viên</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-4 col-md-4 grid-margin stretch-card">
+    <div class="col-lg-4 col-md-4 col-6 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <div class="card-content">
                     <h3 class="box-title">Số lần chi tiêu</h3>
                     <span class="box-number color-t-blue"><?php echo $spending_count ?></span>
                     <div class="box-number-new">
-                        <p>Số lần chi tiêu trong tháng</p>
+                        <p>30 ngày qua</p>
                     </div>
                 </div>
             </div>
@@ -51,10 +51,10 @@ if ($query_total_spending) {
         <div class="card">
             <div class="card-body">
                 <div class="card-content">
-                    <h3 class="box-title">Tổng chi tiêu</h3>
+                    <h3 class="box-title">Tổng tiền chi tiêu</h3>
                     <span class="box-number color-t-red"><?php echo number_format($total_spending) ?>đ</span>
                     <div class="box-number-new">
-                        <p>Số tiền chi tiêu trong tháng</p>
+                        <p>30 ngày qua</p>
                     </div>
                 </div>
             </div>

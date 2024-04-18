@@ -7,7 +7,7 @@ if (isset($_POST['codebaomat'])) {
     $code = '';
 }
 if (isset($_POST['thanhkhoan'])) {
-    if ($code == 'xomtro225') {
+    if ($code == 'xom225manage') {
         $sql_update = "Update member SET totalExpend = 0, totalLoss = 0, memberNote = 'Vừa được thanh khoản'";
         $query_update = mysqli_query($mysqli, $sql_update);
         header('Location: ../../index.php?action=settings&query=settings&message=success');
@@ -15,7 +15,7 @@ if (isset($_POST['thanhkhoan'])) {
         header('Location: ../../index.php?action=settings&query=settings&message=error');
     }
 } else if (isset($_POST['chotchitieu'])) {
-    if ($code == 'xomtro225') {
+    if ($code == 'xom225manage') {
         $sql_update = "Update spending SET spendingStatus = -1";
         $query_update = mysqli_query($mysqli, $sql_update);
         $sql_update_paymentgroup = "Update paymentgroup SET paymentStatus = -1";
@@ -25,7 +25,7 @@ if (isset($_POST['thanhkhoan'])) {
         header('Location: ../../index.php?action=settings&query=settings&message=error');
     }
 } else if (isset($_POST['lammoichitieu'])) {
-    if ($code == 'xomtro225') {
+    if ($code == 'xom225manage') {
         $sql_delete = "DELETE FROM spending";
         $query_delete = mysqli_query($mysqli, $sql_delete);
         $sql_delete_paymentgroup= "DELETE FROM paymentgroup";
@@ -37,7 +37,7 @@ if (isset($_POST['thanhkhoan'])) {
         header('Location: ../../index.php?action=settings&query=settings&message=error');
     }
 } else if (isset($_POST['resettoanbohethong'])) {
-    if ($code == 'xomtro225') {
+    if ($code == 'xom225manage') {
         $sql_delete_group = "DELETE FROM groupspend";
         $sql_delete_member = "DELETE FROM member";
         $sql_delete_paymentgroup = "DELETE FROM paymentgroup";

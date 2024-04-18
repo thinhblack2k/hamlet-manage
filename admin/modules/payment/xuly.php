@@ -1,5 +1,6 @@
 <?php
 include('../../config/config.php');
+require_once '../../mail/index.php';
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
 } else {
@@ -20,8 +21,6 @@ function generateUniqueRandomString($length = 10)
     // Trả về một phần của chuỗi để đảm bảo độ dài mong muốn
     return substr($uniqueString, 0, $length);
 }
-
-print_r($data);
 
 $spend_ids = json_decode($data);
 $spendName = $_POST['spendName'];
@@ -57,6 +56,30 @@ if (isset($_POST['spend_add'])) {
 
         $sql_update_member = "UPDATE member SET totalLoss = '" . $totalLossNew . "', memberNote = 'Vừa được thanh' WHERE memberId = $memberId";
         mysqli_query($mysqli, $sql_update_member);
+
+        // gửi mail
+        $email_content = '<h4>Bạn vừa thực hiện 1 giao dịch thanh toán vui lòng kiểm tra lại số dư</h4>
+        <h4>Thống kê số dư</h4>
+        <table style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Tên thành viên</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Số dư</th>
+        </tr>';
+
+        $sql_get_member_info = "SELECT * FROM member";
+        $query_get_member_info = mysqli_query($mysqli, $sql_get_member_info);
+
+        while ($memberAll = mysqli_fetch_array($query_get_member_info)) {
+            $email_content .= '<tr>
+        <td style="padding: 8px; border: 1px solid #dddddd; width: 120px;">' . $memberAll['memberName'] . '</td>
+        <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($memberAll['totalExpend'] - $memberAll['totalLoss']) . '</td>
+        </tr>';
+        }
+
+        $email_content .= '</table>';
+        if ($member['memberEmail'] != null && $member['memberEmail'] != "") {
+            sendEmail($member['memberEmail'], $email_content);
+        }
     }
     // Lấy ra thông tin của thành viên đã chi cũ
     $sql_get_member_spending = "SELECT * FROM member WHERE memberId = '" . $spendMember . "' LIMIT 1";
@@ -66,6 +89,30 @@ if (isset($_POST['spend_add'])) {
 
     $sql_update_member_spending = "UPDATE member SET totalExpend = '" . $totalExpendNew . "', memberNote = 'Vừa thực hiện thanh toán'  WHERE memberId = $spendMember";
     mysqli_query($mysqli, $sql_update_member_spending);
+
+    // gửi mail
+    $email_content = '<h4>Bạn vừa thực hiện 1 giao dịch thanh toán vui lòng kiểm tra lại số dư</h4>
+    <h4>Thống kê số dư</h4>
+    <table style="border-collapse: collapse; width: 100%;">
+    <tr>
+        <th style="padding: 8px; border: 1px solid #dddddd;">Tên thành viên</th>
+        <th style="padding: 8px; border: 1px solid #dddddd;">Số dư</th>
+    </tr>';
+
+    $sql_get_member_info = "SELECT * FROM member";
+    $query_get_member_info = mysqli_query($mysqli, $sql_get_member_info);
+
+    while ($memberAll = mysqli_fetch_array($query_get_member_info)) {
+        $email_content .= '<tr>
+        <td style="padding: 8px; border: 1px solid #dddddd; width: 120px;">' . $memberAll['memberName'] . '</td>
+        <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($memberAll['totalExpend'] - $memberAll['totalLoss']) . '</td>
+    </tr>';
+    }
+
+    $email_content .= '</table>';
+    if ($member['memberEmail'] != null && $member['memberEmail'] != "") {
+        sendEmail($member['memberEmail'], $email_content);
+    }
 
     header('Location: ../../index.php?action=payment&query=payment_list&message=success');
 } elseif (isset($_POST['spend_edit'])) {
@@ -84,6 +131,30 @@ if (isset($_POST['spend_add'])) {
     $sql_get_member = "SELECT * FROM member WHERE memberId = '$spendMember' LIMIT 1";
     $query_get_member = mysqli_query($mysqli, $sql_get_member);
     $member_spend = mysqli_fetch_array($query_get_member);
+
+    // gửi mail
+    $email_content = '<h4>Có 1 khoản thanh toán vừa được sửa đổi vui lòng kiểm tra lại số dư</h4>
+    <h4>Thống kê số dư</h4>
+    <table style="border-collapse: collapse; width: 100%;">
+    <tr>
+        <th style="padding: 8px; border: 1px solid #dddddd;">Tên thành viên</th>
+        <th style="padding: 8px; border: 1px solid #dddddd;">Số dư</th>
+    </tr>';
+
+    $sql_get_member_info = "SELECT * FROM member";
+    $query_get_member_info = mysqli_query($mysqli, $sql_get_member_info);
+
+    while ($memberAll = mysqli_fetch_array($query_get_member_info)) {
+        $email_content .= '<tr>
+    <td style="padding: 8px; border: 1px solid #dddddd; width: 120px;">' . $memberAll['memberName'] . '</td>
+    <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($memberAll['totalExpend'] - $memberAll['totalLoss']) . '</td>
+    </tr>';
+    }
+
+    $email_content .= '</table>';
+    if ($member_spend['memberEmail'] != null && $member_spend['memberEmail'] != "") {
+        sendEmail($member_spend['memberEmail'], $email_content);
+    }
 
     $totalAmount = $member_spend['totalExpend'] - $spending['spendTotal'];
 
@@ -111,6 +182,30 @@ if (isset($_POST['spend_add'])) {
 
         $sql_update_member = "UPDATE member SET totalLoss = $totalLossOld WHERE memberId = '$memberId'";
         mysqli_query($mysqli, $sql_update_member);
+
+        // gửi mail
+        $email_content = '<h4>Có 1 khoản thanh toán vừa được sửa đổi, vui lòng kiểm tra lại số dư</h4>
+        <h4>Thống kê số dư</h4>
+        <table style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Tên thành viên</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Số dư</th>
+        </tr>';
+
+        $sql_get_member_info = "SELECT * FROM member";
+        $query_get_member_info = mysqli_query($mysqli, $sql_get_member_info);
+
+        while ($memberAll = mysqli_fetch_array($query_get_member_info)) {
+            $email_content .= '<tr>
+        <td style="padding: 8px; border: 1px solid #dddddd; width: 120px;">' . $memberAll['memberName'] . '</td>
+        <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($memberAll['totalExpend'] - $memberAll['totalLoss']) . '</td>
+        </tr>';
+        }
+
+        $email_content .= '</table>';
+        if ($member['memberEmail'] != null && $member['memberEmail'] != "") {
+            sendEmail($member['memberEmail'], $email_content);
+        }
     }
 
     // Xóa những chi tiết chi tiêu cũ từ bảng paymentgroup

@@ -1,5 +1,6 @@
 <?php
 include('../../config/config.php');
+require_once '../../mail/index.php';
 if (isset($_GET['data'])) {
     $data = $_GET['data'];
 } else {
@@ -20,8 +21,6 @@ function generateUniqueRandomString($length = 10)
     // Trả về một phần của chuỗi để đảm bảo độ dài mong muốn
     return substr($uniqueString, 0, $length);
 }
-
-print_r($data);
 
 $spend_ids = json_decode($data);
 $spendName = $_POST['spendName'];
@@ -58,14 +57,62 @@ if (isset($_POST['spend_add'])) {
         $sql_update_member = "UPDATE member SET totalLoss = '" . $totalLossNew . "', memberNote = 'Tham gia khoản chi' WHERE memberId = $memberId";
         mysqli_query($mysqli, $sql_update_member);
     }
-    // Lấy ra thông tin của thành viên đã chi cũ
+    // Lấy ra thông tin cũ của thành viên đã chi
     $sql_get_member_spending = "SELECT * FROM member WHERE memberId = '" . $spendMember . "' LIMIT 1";
     $query_get_member_spending = mysqli_query($mysqli, $sql_get_member_spending);
     $member = mysqli_fetch_array($query_get_member_spending);
     $totalExpendNew = $member['totalExpend'] + $spendTotal;
 
+    // gửi mail
+    $email_content = '<h4>' . $member['memberName'] . ' vừa thêm 1 khoản chi mới</h4>
+        <table style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Nội dung</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Người chi</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Số tiền</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Tham gia</th>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . $spendName . '</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . $member['memberName'] . '</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($spendTotal) . 'đ</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . $memberCount . '</td>
+        </tr>
+        </table>
+        </br>
+        </br>
+        <h4>Thống kê số dư</h4>
+        <table style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Tên thành viên</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Số dư</th>
+        </tr>';
+
+    $sql_get_member_info = "SELECT * FROM member";
+    $query_get_member_info = mysqli_query($mysqli, $sql_get_member_info);
+
+    while ($member = mysqli_fetch_array($query_get_member_info)) {
+        $email_content .= '<tr>
+            <td style="padding: 8px; border: 1px solid #dddddd; width: 120px;">' . $member['memberName'] . '</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($member['totalExpend'] - $member['totalLoss']) . '</td>
+        </tr>';
+    }
+
+    $email_content .= '</table>';
+
+    foreach ($paymentGroup as $memberId) {
+        // Lấy ra thông tin hiện tại của thành viên
+        $sql_get_member = "SELECT * FROM member WHERE memberId = '" . $memberId . "' LIMIT 1";
+        $query_get_member = mysqli_query($mysqli, $sql_get_member);
+        $member = mysqli_fetch_array($query_get_member);
+        if ($member['memberEmail'] != null && $member['memberEmail'] != "") {
+            sendEmail($member['memberEmail'], $email_content);
+        }
+    }
     $sql_update_member_spending = "UPDATE member SET totalExpend = '" . $totalExpendNew . "', memberNote = 'Vừa thêm 1 khoản chi mới'  WHERE memberId = $spendMember";
     mysqli_query($mysqli, $sql_update_member_spending);
+
+
 
     header('Location: ../../index.php?action=spending&query=spending_list&message=success');
 } elseif (isset($_POST['spend_edit'])) {
@@ -132,6 +179,54 @@ if (isset($_POST['spend_add'])) {
         mysqli_query($mysqli, $sql_update_member);
     }
 
+    // gửi mail
+    $email_content = '<h4> Có một khoản chi vừa được thay đổi</h4>
+        <p>Sửa một xíu nhé ae ^^</p>
+        <table style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Nội dung</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Người chi</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Số tiền</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Tham gia</th>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . $spendName . '</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . $member['memberName'] . '</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($spendTotal) . 'đ</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . $memberCount . '</td>
+        </tr>
+        </table>
+        </br>
+        </br>
+        <h4>Thống kê số dư</h4>
+        <table style="border-collapse: collapse; width: 100%;">
+        <tr>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Tên thành viên</th>
+            <th style="padding: 8px; border: 1px solid #dddddd;">Số dư</th>
+        </tr>';
+
+    $sql_get_member_info = "SELECT * FROM member";
+    $query_get_member_info = mysqli_query($mysqli, $sql_get_member_info);
+
+    while ($member = mysqli_fetch_array($query_get_member_info)) {
+        $email_content .= '<tr>
+            <td style="padding: 8px; border: 1px solid #dddddd; width: 120px;">' . $member['memberName'] . '</td>
+            <td style="padding: 8px; border: 1px solid #dddddd;">' . number_format($member['totalExpend'] - $member['totalLoss']) . 'đ</td>
+        </tr>';
+    }
+
+    $email_content .= '</table>';
+
+    foreach ($paymentGroup as $memberId) {
+        // Lấy ra thông tin hiện tại của thành viên
+        $sql_get_member = "SELECT * FROM member WHERE memberId = '" . $memberId . "' LIMIT 1";
+        $query_get_member = mysqli_query($mysqli, $sql_get_member);
+        $member = mysqli_fetch_array($query_get_member);
+        if ($member['memberEmail'] != null && $member['memberEmail'] != "") {
+            sendEmail($member['memberEmail'], $email_content);
+        }
+    }
+
     // Cập nhật lại totalExpend của người chi trả
     $totalExpendNew = $totalAmount + $spendTotal;
     $sql_update_member_spending = "UPDATE member SET totalExpend = $totalExpendNew, memberNote = 'Vừa thay đổi 1 khoản chi' WHERE memberId = '$spendMember'";
@@ -163,6 +258,13 @@ if (isset($_POST['spend_add'])) {
             $totalLossNew = $member['totalLoss'] - ($spending['spendTotal'] / $spending['memberCount']);
             $sql_update_member = "UPDATE member SET totalLoss = $totalLossNew WHERE memberId = $memberId";
             mysqli_query($mysqli, $sql_update_member);
+
+            $email_content = '<h2>Có 1 khoản chi vừa bị xóa!</h2>
+            <p>Sorry mình nhầm 1 xíu :))</p>
+            ';
+            if ($member['memberEmail'] != null && $member['memberEmail'] != "") {
+                sendEmail($member['memberEmail'], $email_content);
+            }
         }
 
         // Xóa spending

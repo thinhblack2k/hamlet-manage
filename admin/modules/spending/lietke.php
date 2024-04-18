@@ -48,8 +48,9 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                                         ?>
                                     </th>
                                     <th>Ngày</th>
-                                    <th>Nội dung chi</th>
                                     <th>Người chi</th>
+                                    <th>Số tiền</th>
+                                    <th>Nội dung chi</th>
                                     <th class="text-center">Số lượng</th>
                                 </tr>
                             </thead>
@@ -83,7 +84,6 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                                             ?>
                                         </td>
                                         <td><?php echo $row['spendDate'] ?></td>
-                                        <td><?php echo $row['spendName'] ?></td>
                                         <td>
                                             <?php
                                             $sql_get_member_spending = "SELECT * FROM member WHERE memberId = '" . $row['spendMember'] . "' LIMIT 1";
@@ -92,6 +92,8 @@ $query_spending_list = mysqli_query($mysqli, $sql_spending_list);
                                             echo $member['memberName'];
                                             ?>
                                         </td>
+                                        <td><?php echo number_format($row['spendTotal']) ?>đ</td>
+                                        <td><?php echo $row['spendName'] ?></td>
                                         <td class="text-center"><?php echo $row['memberCount'] ?></td>
                                     </tr>
                                 <?php

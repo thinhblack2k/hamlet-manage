@@ -21,6 +21,10 @@
                             <input type="text" name="memberName" class="form-control" value="" placeholder="member name" required>
                         </div>
                         <div class="input-item form-group">
+                            <label for="title" class="d-block">Email</label>
+                            <input type="email" name="memberEmail" class="form-control" value="" placeholder="member email">
+                        </div>
+                        <div class="input-item form-group">
                             <label for="title" class="d-block">Tổng chi</label>
                             <input type="text" name="totalExpend" class="form-control" value="" placeholder="total expend" required>
                         </div>
